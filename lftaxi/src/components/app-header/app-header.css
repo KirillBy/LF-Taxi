@@ -1,0 +1,10 @@
+.appBar {
+    display: "flex";
+    flex-direction: "row";
+    align-items: "center";
+    justify-Content: "space-between";
+    min-height: "64px";
+    background-color: "#000";
+    padding-left: "24px";
+    padding-right: "24px";
+  }
