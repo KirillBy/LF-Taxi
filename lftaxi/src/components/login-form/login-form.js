@@ -24,10 +24,13 @@ const LoginForm = () => {
 const classes = useStyles();
 return (
     <React.Fragment>
-        <Container component="main" maxWidth="xs">
+        <Container component="main" maxWidth="xs" style={{backgroundColor:"white"}}>
             <div className={classes.paper}>
-                <Typography component="h1" variant="h5">
+                <Typography component="h1" variant="h4">
                     Войти
+                </Typography>
+                <Typography component="p">
+                Новый пользователь?
                 </Typography>
                 <form className={classes.form} noValidate>
                     <Grid container spacing={2}>
