@@ -46,7 +46,7 @@ export default class App extends Component {
                 onLogin = {this.onLogin}/>}
                 {this.state.profile && <Profile/>}
                 {this.state.map && <Map/>}
-                {this.state.login && <Login/>}
+                {this.state.login && <Login onMap={this.onMap}/>}
             </React.Fragment>
         );
     }

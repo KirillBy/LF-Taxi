@@ -1,3 +1,26 @@
-body{
+.login-container{
     background-image: url('../../assets/фон@1X.png');
+    height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
+
+.login-flex{
+    display: flex;
+    justify-content: space-around;
+    margin: 0;
+    width: 100%;
+}
+
+.login-logo-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+
+

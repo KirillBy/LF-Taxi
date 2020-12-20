@@ -7,7 +7,7 @@ describe("LoginForm", () => {
     it("render correctly", () => {
         const {getByLabelText} = render(<LoginForm/>)
 
-        expect(getByLabelText('Email:')).toHaveAttribute('name', 'email')
-        expect(getByLabelText('Password:')).toHaveAttribute('name', 'password')
+        expect(getByLabelText('Имя пользователя *')).toHaveAttribute('name', 'username')
+        expect(getByLabelText('Пароль *')).toHaveAttribute('name', 'password')
     })
 })

@@ -1,6 +1,6 @@
 import React from 'react';
 import './login-form.css';
-import { Typography, Grid, TextField, makeStyles, Container, Button} from "@material-ui/core";
+import { Typography, Grid, TextField, makeStyles, Container, Button, Link} from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -16,22 +16,31 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: theme.spacing(1),
         width: '25%',
     },
+    paper: {
+        padding: '40px'
+    }
 
 }));
 
-const LoginForm = () => {
+const LoginForm = ({onMap, onRegistrationForm}) => {
 
 const classes = useStyles();
 return (
     <React.Fragment>
-        <Container component="main" maxWidth="xs" style={{backgroundColor:"white"}}>
+        <Container component="main" maxWidth="xl" style={{backgroundColor:"white"}}>
             <div className={classes.paper}>
                 <Typography component="h1" variant="h4">
                     Войти
                 </Typography>
-                <Typography component="p">
-                Новый пользователь?
-                </Typography>
+                <div className="registration-row">
+                    <Typography component="p" className="new-user">
+                        Новый пользователь? 
+                    </Typography>
+                    <br/>
+                    <Link href="#" onClick={onRegistrationForm}>
+                        Зарегистрируйтесь
+                    </Link>
+                </div>
                 <form className={classes.form} noValidate>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
@@ -62,6 +71,7 @@ return (
                             variant="contained"
                             className={classes.submit}
                             style={{backgroundColor:"orange"}}
+                            onClick={onMap}
                         >
                             Войти
                         </Button>
