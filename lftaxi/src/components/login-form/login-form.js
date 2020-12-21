@@ -24,6 +24,11 @@ const useStyles = makeStyles((theme) => ({
 
 const LoginForm = ({onMap, onRegistrationForm}) => {
 
+const onSubmit = (evt) => {
+    evt.preventDefault();
+    onMap();
+}
+
 const classes = useStyles();
 return (
     <React.Fragment>
@@ -71,7 +76,7 @@ return (
                             variant="contained"
                             className={classes.submit}
                             style={{backgroundColor:"orange"}}
-                            onClick={onMap}
+                            onClick={onSubmit}
                         >
                             Войти
                         </Button>

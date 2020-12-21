@@ -32,8 +32,8 @@ export default class Login extends React.Component {
                 <img className="login-logo" src={logo}/>
             </div>
             <div>
-            {this.state.LoginForm && <LoginForm onMap={this.onMap} onRegistrationForm={this.onRegistrationForm}/> }
-            {this.state.RegistrationForm && <RegistrationForm onMap={this.onMap} onLoginForm={this.onLoginForm}/> }                
+            {this.state.LoginForm && <LoginForm onMap={this.props.onMap} onRegistrationForm={this.onRegistrationForm}/> }
+            {this.state.RegistrationForm && <RegistrationForm onMap={this.props.onMap} onLoginForm={this.onLoginForm}/> }                
             </div>
         </div>
     </div>
