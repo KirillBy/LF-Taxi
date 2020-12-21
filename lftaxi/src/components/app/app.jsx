@@ -1,53 +1,42 @@
-import React, {Component, Profiler} from 'react';
+import React, { useState} from 'react';
 import AppHeader from '../app-header'
 import Profile from '../profile'
 import Map from '../map'
 import Login from '../login'
 
 
-export default class App extends Component {
-    state = {
-        profile: false,
-        map: true,
-        login: false
-      };
-
-    onProfile = () => {
-        this.setState({
-            profile: true,
-            map: false,
-            login: false
-        })
+const App = () => {
+    const [profile, setProfile] = useState(false);
+    const [map, setMap] = useState(true);
+    const [login, setLogin] = useState(false);
+    const onProfile = () => {
+        setProfile(true);
+        setMap(false);
+        setLogin(false);
     }
-
-    onMap = () => {
-        this.setState({
-            profile: false,
-            map: true,
-            login: false
-        })
+    const onMap = () => {
+        setProfile(false);
+        setMap(true);
+        setLogin(false);
     }
-
-    onLogin = () => {
-        this.setState({
-            profile: false,
-            map: false,
-            login: true
-        })
+    const onLogin = () => {
+        setProfile(false);
+        setMap(false);
+        setLogin(true);
     }
+    return (
+        <React.Fragment>
+            {!login && 
+            <AppHeader
+            onProfile = {onProfile}
+            onMap = {onMap}
+            onLogin = {onLogin}/>}
+            {profile && <Profile/>}
+            {map && <Map/>}
+            {login && <Login onMap={onMap}/>}
+        </React.Fragment>
+    );
 
-    render() {
-        return (
-            <React.Fragment>
-                {!this.state.login && 
-                <AppHeader
-                onProfile = {this.onProfile}
-                onMap = {this.onMap}
-                onLogin = {this.onLogin}/>}
-                {this.state.profile && <Profile/>}
-                {this.state.map && <Map/>}
-                {this.state.login && <Login onMap={this.onMap}/>}
-            </React.Fragment>
-        );
-    }
 }
+
+export default App;

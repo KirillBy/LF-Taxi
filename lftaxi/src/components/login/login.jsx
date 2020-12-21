@@ -1,30 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import LoginForm from '../login-form';
 import './login.css';
 import logo from '../../assets/icon-login.png'
 import RegistrationForm from '../registration-form';
 
 
-export default class Login extends React.Component {
-    state = {
-        LoginForm: true,
-        RegistrationForm: false
-      };
 
-    onRegistrationForm = () => {
-    this.setState({
-        RegistrationForm: true,
-        LoginForm: false,
-    })
+const Login = ({onMap}) => {
+
+    const [loginForm, setLoginForm] = useState(true);
+    const [registrationForm, setRegistrationForm] = useState(false);
+
+    const onRegistrationForm = () => {
+        setLoginForm(false);
+        setRegistrationForm(true);
+    }
+    
+    const onLoginForm = () => {
+        setLoginForm(true);
+        setRegistrationForm(false);
     }
 
-    onLoginForm = () => {
-        this.setState({
-            RegistrationForm: false,
-            LoginForm: true,
-        }) 
-    }
-    render(){
         return (
         <div className="login-container">
         <div className="login-flex"> 
@@ -32,11 +28,13 @@ export default class Login extends React.Component {
                 <img className="login-logo" src={logo}/>
             </div>
             <div>
-            {this.state.LoginForm && <LoginForm onMap={this.props.onMap} onRegistrationForm={this.onRegistrationForm}/> }
-            {this.state.RegistrationForm && <RegistrationForm onMap={this.props.onMap} onLoginForm={this.onLoginForm}/> }                
+            {loginForm && <LoginForm onMap={onMap} onRegistrationForm={onRegistrationForm}/> }
+            {registrationForm && <RegistrationForm onMap={onMap} onLoginForm={onLoginForm}/> }                
             </div>
         </div>
     </div>
-    )}
+    )
 
 };
+
+export default Login;

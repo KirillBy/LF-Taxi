@@ -3,11 +3,9 @@ import {render, fireEvent} from '@testing-library/react'
 import App from '../app'
 import AppHeader from './app-header'
 
-
-jest.mock('../login', () => ({ Login: () => <div>Login component</div> }))
-jest.mock('../map', () => ({ Map: () => <div>Map component</div> }))
-jest.mock('../profile', () => ({ Profile: () => <div>Profile component</div> }))
-
+jest.mock('../login', () =>  () => (<div>Login component</div> ))
+jest.mock('../map', () =>  () => (<div>Map component</div> ))
+jest.mock('../profile', () => () => (<div>Profile component</div> ))
 
 describe("AppHeader", () => {
     it("renders correctly", () => {
@@ -20,10 +18,15 @@ describe("AppHeader", () => {
 
 describe("when clicked on navigation buttons", () => {
     it("opens the corresponding page", () => {
-        const {getByText} = render(<AppHeader/>);
-        const {container} = render(<App/>);
+        const {container, getByText} = render(<App/>);
 
         fireEvent.click(getByText("Профиль"))
         expect(container.innerHTML).toMatch("Profile component")
+
+        fireEvent.click(getByText("Карта"))
+        expect(container.innerHTML).toMatch("Map component")
+
+        fireEvent.click(getByText("Выйти"))
+        expect(container.innerHTML).toMatch("Login component")
     })
 })
