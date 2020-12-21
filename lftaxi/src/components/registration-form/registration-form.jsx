@@ -64,11 +64,11 @@ const RegistrationForm = ({ onMap, onLoginForm }) => {
                             </Grid>
                             <Grid item xs={12} sm={6}>
                                 <TextField 
+                                required
                                 id="lastName" 
                                 name="lastName" 
                                 label="Фамилия" 
                                 fullWidth 
-                                required
                                 />
                             </Grid>
                             <Grid item xs={12}>
