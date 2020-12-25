@@ -20,12 +20,6 @@ describe("when clicked on navigation buttons", () => {
     it("opens the corresponding page", () => {
         const {container, getByText} = render(<App/>);
 
-        fireEvent.click(getByText("Профиль"))
-        expect(container.innerHTML).toMatch("Profile component")
-
-        fireEvent.click(getByText("Карта"))
-        expect(container.innerHTML).toMatch("Map component")
-
         fireEvent.click(getByText("Выйти"))
         expect(container.innerHTML).toMatch("Login component")
     })

@@ -1,6 +1,6 @@
 import React from 'react';
 import LoginForm from './login-form';
-import {render} from '@testing-library/react';
+import {render, fireEvent} from '@testing-library/react';
 import '@testing-library/jest-dom'
 
 describe("LoginForm", () => {
@@ -11,3 +11,4 @@ describe("LoginForm", () => {
         expect(getByLabelText('Пароль *')).toHaveAttribute('name', 'password')
     })
 })
+
