@@ -1,7 +1,8 @@
 import React, {useState} from 'react';
 import './login-form.css';
 import { Typography, Grid, TextField, makeStyles, Container, Button, Link} from "@material-ui/core";
-import withAuth from '../../helpers/auth-context'
+import withAuth from '../../helpers/auth-context';
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -24,6 +25,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const LoginForm = ({onMap, onRegistrationForm, logIn, isLoggedIn}) => {
+LoginForm.propTypes = {
+    onRegistrationForm: PropTypes.func,
+    onMap: PropTypes.func,
+    login: PropTypes.func,
+    isLoggedIn: PropTypes.bool
+};
 
 const [email, setEmail] = useState('')
 const [password, setPassword] = useState('')

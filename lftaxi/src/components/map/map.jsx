@@ -12,7 +12,7 @@ const Map = () => {
         map = new mapboxgl.Map({
             container: mapContainer.current,
             style: "mapbox://styles/mapbox/streets-v9",
-            center: [27.5556504, 53.9029126], // LED
+            center: [27.5556504, 53.9029126], 
             zoom: 12,
         })
 

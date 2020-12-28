@@ -2,8 +2,15 @@ import React from 'react';
 import './app-header.css';
 import logo from '../../assets/icon.png'
 import withAuth from '../../helpers/auth-context/auth-context'
+import PropTypes from "prop-types";
 
 const AppHeader = ({onProfile, onMap, onLogin, logOut}) => {
+    AppHeader.propTypes = {
+        onProfile: PropTypes.func,
+        onMap: PropTypes.func,
+        onLogin: PropTypes.func,
+        logOut: PropTypes.func
+    };
     const onLogOut = () => {
         logOut();
         onLogin();
