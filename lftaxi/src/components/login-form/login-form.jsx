@@ -1,6 +1,8 @@
-import React from 'react';
+import React, {useState} from 'react';
 import './login-form.css';
 import { Typography, Grid, TextField, makeStyles, Container, Button, Link} from "@material-ui/core";
+import withAuth from '../../helpers/auth-context';
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -22,11 +24,48 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const LoginForm = ({onMap, onRegistrationForm}) => {
+const LoginForm = ({onMap, onRegistrationForm, logIn, isLoggedIn}) => {
+LoginForm.propTypes = {
+    onRegistrationForm: PropTypes.func,
+    onMap: PropTypes.func,
+    login: PropTypes.func,
+    isLoggedIn: PropTypes.bool
+};
+
+const [email, setEmail] = useState('')
+const [password, setPassword] = useState('')
+
+const tryToLogIn = new Promise(function(resolve, reject) {
+    if(logIn(email, password)) {
+        resolve(true);
+    } else 
+    resolve(false);
+ });
+
+const onEmailChange = (e) => {
+    setEmail(e.target.value);
+  };
+
+const onPasswordChange = (e) => {
+    setPassword(e.target.value);
+}
+
+const checkIfLogInSuccess = () => {
+    if (isLoggedIn){
+        onMap();
+    }
+}
 
 const onSubmit = (evt) => {
     evt.preventDefault();
-    onMap();
+    tryToLogIn.then((res) => {
+        if(res === true){
+            checkIfLogInSuccess();
+        } else {
+            document.login.reset(); 
+        }
+    });
+
 }
 
 const classes = useStyles();
@@ -46,7 +85,7 @@ return (
                         Зарегистрируйтесь
                     </Link>
                 </div>
-                <form className={classes.form} noValidate>
+                <form name="login" className={classes.form} noValidate>
                     <Grid container spacing={2}>
                         <Grid item xs={12}>
                             <TextField
@@ -55,6 +94,8 @@ return (
                                 id="username"
                                 label="Имя пользователя"
                                 name="username"
+                                inputProps={email}
+                                onChange={onEmailChange}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -65,6 +106,8 @@ return (
                                 label="Пароль"
                                 type="password"
                                 id="password"
+                                inputProps={password}
+                                onChange={onPasswordChange}
                                 autoComplete="current-password"
                             />
                         </Grid>
@@ -88,4 +131,4 @@ return (
 )
 };
 
-export default LoginForm;
+export default withAuth(LoginForm);

@@ -3,10 +3,14 @@ import LoginForm from '../login-form';
 import './login.css';
 import logo from '../../assets/icon-login.png'
 import RegistrationForm from '../registration-form';
+import PropTypes from "prop-types";
 
 
 
 const Login = ({onMap}) => {
+    Login.propTypes = {
+        onMap: PropTypes.func,
+    };
 
     const [loginForm, setLoginForm] = useState(true);
     const [registrationForm, setRegistrationForm] = useState(false);

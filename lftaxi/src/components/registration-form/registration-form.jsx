@@ -1,6 +1,7 @@
 import React from 'react';
 import './registration-form.css';
 import { Typography, Grid, TextField, makeStyles, Container, Button, Link } from "@material-ui/core";
+import PropTypes from "prop-types";
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -23,6 +24,10 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const RegistrationForm = ({ onMap, onLoginForm }) => {
+    RegistrationForm.propTypes = {
+        onLoginForm: PropTypes.func,
+        onMap: PropTypes.func,
+    };
 
     const classes = useStyles();
     return (
