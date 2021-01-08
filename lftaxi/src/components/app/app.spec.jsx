@@ -10,7 +10,6 @@ jest.mock('../app-header', () => (() => <div>Header component</div> ))
 describe("App", () => {
     it("renders correctly", () => {
         const {container} = render(<App/>)
-        expect(container.innerHTML).toMatch("Map component")
-        expect(container.innerHTML).toMatch("Header component")
+        expect(container.innerHTML).toMatch("Login component");
     })
 })

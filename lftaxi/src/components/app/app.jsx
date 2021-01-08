@@ -3,12 +3,13 @@ import AppHeader from '../app-header'
 import Profile from '../profile'
 import Map from '../map'
 import Login from '../login'
+import withAuth from '../../helpers/auth-context/auth-context'
 
 
 const App = () => {
     const [profile, setProfile] = useState(false);
-    const [map, setMap] = useState(true);
-    const [login, setLogin] = useState(false);
+    const [map, setMap] = useState(false);
+    const [login, setLogin] = useState(true);
     const onProfile = () => {
         setProfile(true);
         setMap(false);
@@ -39,4 +40,4 @@ const App = () => {
 
 }
 
-export default App;
+export default withAuth(App);
