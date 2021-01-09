@@ -1,4 +1,4 @@
 import {createStore} from 'redux';
-import rootReducer from '../reducers/auth';
+import rootReducer from '../reducers';
 
 export const store = createStore(rootReducer);

@@ -1,4 +1,4 @@
-import {LOG_IN, LOG_OUT } from '../actions/actions'
+import {LOG_IN, LOG_OUT } from '../actions/login'
 
 const initialState = {
     isLoggedIn: false

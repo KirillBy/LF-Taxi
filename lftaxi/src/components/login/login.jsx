@@ -7,10 +7,7 @@ import PropTypes from "prop-types";
 
 
 
-const Login = ({onMap}) => {
-    Login.propTypes = {
-        onMap: PropTypes.func,
-    };
+const Login = () => {
 
     const [loginForm, setLoginForm] = useState(true);
     const [registrationForm, setRegistrationForm] = useState(false);
@@ -32,8 +29,8 @@ const Login = ({onMap}) => {
                 <img className="login-logo" src={logo}/>
             </div>
             <div>
-            {loginForm && <LoginForm onMap={onMap} onRegistrationForm={onRegistrationForm}/> }
-            {registrationForm && <RegistrationForm onMap={onMap} onLoginForm={onLoginForm}/> }                
+            {loginForm && <LoginForm  onRegistrationForm={onRegistrationForm}/> }
+            {registrationForm && <RegistrationForm onLoginForm={onLoginForm}/> }                
             </div>
         </div>
     </div>

@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
 import './login-form.css';
 import { Typography, Grid, TextField, makeStyles, Container, Button, Link} from "@material-ui/core";
-import withAuth from '../../helpers/auth-context';
 import PropTypes from "prop-types";
+import {connect} from 'react-redux';
+import {onMap} from './../../actions/pages';
+import {logIn} from './../../actions/login'; 
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -24,19 +26,17 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const LoginForm = ({onMap, onRegistrationForm, logIn, isLoggedIn}) => {
+const LoginForm = ({ onRegistrationForm, isLoggedIn}) => {
+
 LoginForm.propTypes = {
     onRegistrationForm: PropTypes.func,
-    onMap: PropTypes.func,
-    login: PropTypes.func,
-    isLoggedIn: PropTypes.bool
 };
 
 const [email, setEmail] = useState('')
 const [password, setPassword] = useState('')
 
 const tryToLogIn = new Promise(function(resolve, reject) {
-    if(logIn(email, password)) {
+    if(logIn()) {
         resolve(true);
     } else 
     resolve(false);
@@ -131,4 +131,7 @@ return (
 )
 };
 
-export default withAuth(LoginForm);
+export default connect(
+    (state) => ({isLoggedIn: state.auth.isLoggedIn}),
+    {logIn, onMap}
+)(LoginForm);
