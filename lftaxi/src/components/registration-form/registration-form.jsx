@@ -3,7 +3,6 @@ import './registration-form.css';
 import { Typography, Grid, TextField, makeStyles, Container, Button, Link } from "@material-ui/core";
 import PropTypes from "prop-types";
 import {connect} from 'react-redux';
-import {onMap} from './../../actions/pages';
 import {logIn} from './../../actions/login';
 
 
@@ -98,7 +97,7 @@ const RegistrationForm = ({onLoginForm }) => {
                                 variant="contained"
                                 className={classes.submit}
                                 style={{ backgroundColor: "orange" }}
-                                onClick={onMap}
+                                //onClick={onMap}
                             >
                                 Войти
                         </Button>
@@ -113,5 +112,5 @@ const RegistrationForm = ({onLoginForm }) => {
 
 export default connect(
     null,
-    {logIn, onMap}
+    {logIn}
 )(RegistrationForm);

@@ -4,20 +4,28 @@ import Profile from '../profile'
 import Map from '../map'
 import Login from '../login'
 import {connect} from 'react-redux' 
+import { Switch, Route} from "react-router-dom";
+import { PrivateRoute } from "./../../private-route";
 
 
-const App = ({login, map, profile}) => {
+const App = ({isLoggedIn}) => {
     return (
         <React.Fragment>
-            {!login && 
+            {isLoggedIn && 
             <AppHeader/>}
-            {profile && <Profile/>}
-            {map && <Map/>}
-            {login && <Login/>}
+            <main data-testid="container">
+                <section>
+                    <Switch>
+                    <Route exact path="/" component={Login} />
+                    <PrivateRoute path="/map" component={Map} />
+                    <PrivateRoute path="/profile" component={Profile} />
+                    </Switch>
+                </section>
+            </main>
         </React.Fragment>
     );
 }
 
 export default connect(
-    (state) => ({login: state.pages.login, map: state.pages.map, profile: state.pages.profile })
+    (state) => ({isLoggedIn: state.auth.isLoggedIn })
 )(App);

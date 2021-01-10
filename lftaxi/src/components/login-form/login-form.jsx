@@ -4,6 +4,7 @@ import { Typography, Grid, TextField, makeStyles, Container, Button, Link} from 
 import PropTypes from "prop-types";
 import {connect} from 'react-redux';
 import {authenticate} from './../../actions/login';
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -31,6 +32,8 @@ LoginForm.propTypes = {
     onRegistrationForm: PropTypes.func,
 };
 
+let history = useHistory();
+
 const [email, setEmail] = useState('')
 const [password, setPassword] = useState('')
 
@@ -46,7 +49,9 @@ const onPasswordChange = (e) => {
 
 const onSubmit = (e) => {
      e.preventDefault();
-     authenticate(email, password);
+     authenticate(email, password).then(() => {
+        history.push('/map');
+    });
 }
 
 const classes = useStyles();

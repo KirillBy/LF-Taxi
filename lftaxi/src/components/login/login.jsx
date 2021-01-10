@@ -3,7 +3,6 @@ import LoginForm from '../login-form';
 import './login.css';
 import logo from '../../assets/icon-login.png'
 import RegistrationForm from '../registration-form';
-import PropTypes from "prop-types";
 
 
 
