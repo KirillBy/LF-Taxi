@@ -3,8 +3,7 @@ import './login-form.css';
 import { Typography, Grid, TextField, makeStyles, Container, Button, Link} from "@material-ui/core";
 import PropTypes from "prop-types";
 import {connect} from 'react-redux';
-import {onMap} from './../../actions/pages';
-import {logIn} from './../../actions/login'; 
+import {authenticate} from './../../actions/login';
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -26,7 +25,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const LoginForm = ({ onRegistrationForm, isLoggedIn}) => {
+const LoginForm = ({ onRegistrationForm, authenticate}) => {
 
 LoginForm.propTypes = {
     onRegistrationForm: PropTypes.func,
@@ -35,12 +34,6 @@ LoginForm.propTypes = {
 const [email, setEmail] = useState('')
 const [password, setPassword] = useState('')
 
-const tryToLogIn = new Promise(function(resolve, reject) {
-    if(logIn()) {
-        resolve(true);
-    } else 
-    resolve(false);
- });
 
 const onEmailChange = (e) => {
     setEmail(e.target.value);
@@ -50,22 +43,10 @@ const onPasswordChange = (e) => {
     setPassword(e.target.value);
 }
 
-const checkIfLogInSuccess = () => {
-    if (isLoggedIn){
-        onMap();
-    }
-}
 
-const onSubmit = (evt) => {
-    evt.preventDefault();
-    tryToLogIn.then((res) => {
-        if(res === true){
-            checkIfLogInSuccess();
-        } else {
-            document.login.reset(); 
-        }
-    });
-
+const onSubmit = (e) => {
+     e.preventDefault();
+     authenticate(email, password);
 }
 
 const classes = useStyles();
@@ -94,7 +75,6 @@ return (
                                 id="username"
                                 label="Имя пользователя"
                                 name="username"
-                                inputProps={email}
                                 onChange={onEmailChange}
                             />
                         </Grid>
@@ -106,7 +86,6 @@ return (
                                 label="Пароль"
                                 type="password"
                                 id="password"
-                                inputProps={password}
                                 onChange={onPasswordChange}
                                 autoComplete="current-password"
                             />
@@ -132,6 +111,6 @@ return (
 };
 
 export default connect(
-    (state) => ({isLoggedIn: state.auth.isLoggedIn}),
-    {logIn, onMap}
+    null,
+    {authenticate}
 )(LoginForm);
