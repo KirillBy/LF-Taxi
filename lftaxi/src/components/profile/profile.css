@@ -1,0 +1,23 @@
+.profile-container{
+    background-image: url('../../assets/фон@1X.png');
+    height: 100vh;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+.profile-flex{
+    display: flex;
+    justify-content: space-around;
+    margin-top: 50px;
+    width: 100%;
+}
+
+.profile-form{
+    height: 500px;
+    width: 700px;
+}
