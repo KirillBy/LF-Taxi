@@ -1,9 +1,8 @@
 import React, {useState} from 'react';
 import './card-form.css';
 import { Typography, Grid, TextField, makeStyles, Container, Button} from "@material-ui/core";
-import PropTypes from "prop-types";
 import {connect} from 'react-redux';
-import {authenticate} from './../../actions/login';
+import {addCard} from './../../actions/user';
 import { useHistory } from "react-router-dom";
 import {MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -22,6 +21,11 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: theme.spacing(1),
         width: '25%',
     },
+    mapButton: {
+        marginTop: theme.spacing(3),
+        marginLeft: theme.spacing(1),
+        width: '35%',
+    },
     paper: {
         padding: '40px',
 
@@ -39,13 +43,14 @@ const useStyles = makeStyles((theme) => ({
         display: 'flex',
         justifyContent: 'space-between'
     },
+    success: {
+        marginTop: theme.spacing(5)
+    }
     
 
 }));
 
-const CardForm = ({  authenticate}) => {
-
-
+const CardForm = ({addCard, userCard}) => {
 
 let history = useHistory();
 
@@ -71,16 +76,20 @@ const handleDateChange = (date) => {
     setexpireDate(date);
   };
 
-const onSubmit = () => {
-    console.log("kuky")
+const onSubmit = (e) => {
+     e.preventDefault();
+     const newCard = {
+         cardNumber,
+         cardHolder,
+         expireDate,
+         CVC
+     }
+     addCard(newCard);
 }
 
-// const onSubmit = (e) => {
-//      e.preventDefault();
-//      authenticate(email, password).then(() => {
-//         history.push('/map');
-//     });
-// }
+const onMap = () => {
+    history.push('/map');
+}
 
 const classes = useStyles();
 return (
@@ -98,11 +107,11 @@ return (
                     </Typography>
                 </div>
 
-    
+                {userCard === null ? 
                 <form name="login" className={classes.form} noValidate>
                     <div className={classes.cardGridGroup}>
-                    <Grid container spacing={2}  >
-                        <Grid item xl={12}>
+                    <Grid container spacing={2} xl={10}  >
+                        <Grid item >
                             <TextField
                                 required
                                 fullWidth
@@ -112,12 +121,13 @@ return (
                                 onChange={onCardNumberChange}
                             />
                         </Grid>
-                        <Grid item xl={12}>
+                        <Grid item xl={10}>
                         <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDatePicker
-                            margin="normal"
+                        <KeyboardDatePicker 
                             id="date-picker-dialog"
-                            label="Date picker dialog"
+                            label="Expire date"
+                            name="Expire date"
+                            views={["year", "month"]}
                             format="MM/yyyy"
                             value={expireDate}
                             onChange={handleDateChange}
@@ -152,8 +162,8 @@ return (
                         </Grid>
                     </Grid>
                     </div>
-                    <div className={classes.buttons}>
-                        <Button
+                    <div className={classes.buttons}>       
+                       <Button
                             type="submit"
                             fullWidth
                             variant="contained"
@@ -165,6 +175,23 @@ return (
                         </Button>
                     </div>
                 </form>
+                : 
+                <div className={classes.success}>
+                    <p>Платёжные данные обновлены. Теперь вы можете заказывать такси.</p>
+                    <div className={classes.buttons}>       
+                       <Button
+                            fullWidth
+                            variant="contained"
+                            className={classes.mapButton}
+                            style={{backgroundColor:"orange"}}
+                            onClick={onMap}
+                        >
+                            Перейти на карту
+                        </Button>
+                    </div>
+                </div>
+
+                }
             </div>
         </Container>
     </React.Fragment>
@@ -172,6 +199,6 @@ return (
 };
 
 export default connect(
-    null,
-    {authenticate}
+    (state) => ({userCard: state.user.userCard }),
+    {addCard}
 )(CardForm);
