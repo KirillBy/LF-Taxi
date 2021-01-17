@@ -1,12 +1,16 @@
 import ReactDOM from 'react-dom';
 import App from './components/app';
 import 'bootstrap/dist/css/bootstrap.css';
-import { AuthProvider } from './helpers/auth-context/auth-context';
+import {Provider} from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
+import {store} from './store/store' 
 
 ReactDOM.render(
-  <AuthProvider>
-    <App />
-  </AuthProvider>,
+  <BrowserRouter>
+    <Provider store={store} >
+      <App />
+    </Provider>
+  </BrowserRouter>,
   document.getElementById('root')
 );
 

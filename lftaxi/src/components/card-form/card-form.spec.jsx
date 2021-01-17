@@ -1,15 +1,15 @@
 import React from 'react';
-import LoginForm from './login-form';
+import CardForm from './card-form';
 import {render} from '@testing-library/react';
 import '@testing-library/jest-dom'
 import {Provider} from 'react-redux'
 import {Router} from 'react-router-dom';
 import {createMemoryHistory} from 'history'
 
-describe("LoginForm", () => {
+describe("CardForm", () => {
     it("render correctly", () => {
         const mockStore = {
-            getState: () => ({auth: {isLoggedIn: true}}),
+            getState: () => ({user: {userCard: null}}),
             subscribe: () => {},
             dispatch: () => {}
         }
@@ -19,14 +19,15 @@ describe("LoginForm", () => {
 
                 <Router history={history}>
                     <Provider store={mockStore}>
-                        <LoginForm/>
+                        <CardForm/>
                     </Provider>
                 </Router>
             
         )
 
-        expect(getByLabelText('Имя пользователя *')).toHaveAttribute('name', 'username')
-        expect(getByLabelText('Пароль *')).toHaveAttribute('name', 'password')
+        expect(getByLabelText('Номер карты *')).toHaveAttribute('name', 'cardnumber')
+        expect(getByLabelText('Имя владельца *')).toHaveAttribute('name', 'cardholder')
+        expect(getByLabelText('CVC *')).toHaveAttribute('name', 'cvc')
+        expect(getByLabelText('Expire date')).toHaveAttribute('name', 'Expire date')
     })
 })
-

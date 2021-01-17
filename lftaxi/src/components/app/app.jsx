@@ -1,43 +1,31 @@
-import React, { useState} from 'react';
+import React from 'react';
 import AppHeader from '../app-header'
 import Profile from '../profile'
 import Map from '../map'
 import Login from '../login'
-import withAuth from '../../helpers/auth-context/auth-context'
+import {connect} from 'react-redux' 
+import { Switch, Route} from "react-router-dom";
+import { PrivateRoute } from "./../../private-route";
 
 
-const App = () => {
-    const [profile, setProfile] = useState(false);
-    const [map, setMap] = useState(false);
-    const [login, setLogin] = useState(true);
-    const onProfile = () => {
-        setProfile(true);
-        setMap(false);
-        setLogin(false);
-    }
-    const onMap = () => {
-        setProfile(false);
-        setMap(true);
-        setLogin(false);
-    }
-    const onLogin = () => {
-        setProfile(false);
-        setMap(false);
-        setLogin(true);
-    }
+const App = ({isLoggedIn}) => {
     return (
         <React.Fragment>
-            {!login && 
-            <AppHeader
-            onProfile = {onProfile}
-            onMap = {onMap}
-            onLogin = {onLogin}/>}
-            {profile && <Profile/>}
-            {map && <Map/>}
-            {login && <Login onMap={onMap}/>}
+            {isLoggedIn && 
+            <AppHeader/>}
+            <main data-testid="container">
+                <section>
+                    <Switch>
+                    <Route exact path="/" component={Login} />
+                    <PrivateRoute path="/map" component={Map} />
+                    <PrivateRoute path="/profile" component={Profile} />
+                    </Switch>
+                </section>
+            </main>
         </React.Fragment>
     );
-
 }
 
-export default withAuth(App);
+export default connect(
+    (state) => ({isLoggedIn: state.auth.isLoggedIn })
+)(App);

@@ -1,8 +1,10 @@
 import React, {useState} from 'react';
 import './login-form.css';
 import { Typography, Grid, TextField, makeStyles, Container, Button, Link} from "@material-ui/core";
-import withAuth from '../../helpers/auth-context';
 import PropTypes from "prop-types";
+import {connect} from 'react-redux';
+import {authenticate} from './../../actions/login';
+import { useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -24,23 +26,17 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const LoginForm = ({onMap, onRegistrationForm, logIn, isLoggedIn}) => {
+const LoginForm = ({ onRegistrationForm, authenticate}) => {
+
 LoginForm.propTypes = {
     onRegistrationForm: PropTypes.func,
-    onMap: PropTypes.func,
-    login: PropTypes.func,
-    isLoggedIn: PropTypes.bool
 };
+
+let history = useHistory();
 
 const [email, setEmail] = useState('')
 const [password, setPassword] = useState('')
 
-const tryToLogIn = new Promise(function(resolve, reject) {
-    if(logIn(email, password)) {
-        resolve(true);
-    } else 
-    resolve(false);
- });
 
 const onEmailChange = (e) => {
     setEmail(e.target.value);
@@ -50,22 +46,12 @@ const onPasswordChange = (e) => {
     setPassword(e.target.value);
 }
 
-const checkIfLogInSuccess = () => {
-    if (isLoggedIn){
-        onMap();
-    }
-}
 
-const onSubmit = (evt) => {
-    evt.preventDefault();
-    tryToLogIn.then((res) => {
-        if(res === true){
-            checkIfLogInSuccess();
-        } else {
-            document.login.reset(); 
-        }
+const onSubmit = (e) => {
+     e.preventDefault();
+     authenticate(email, password).then(() => {
+        history.push('/map');
     });
-
 }
 
 const classes = useStyles();
@@ -94,7 +80,6 @@ return (
                                 id="username"
                                 label="Имя пользователя"
                                 name="username"
-                                inputProps={email}
                                 onChange={onEmailChange}
                             />
                         </Grid>
@@ -106,7 +91,6 @@ return (
                                 label="Пароль"
                                 type="password"
                                 id="password"
-                                inputProps={password}
                                 onChange={onPasswordChange}
                                 autoComplete="current-password"
                             />
@@ -131,4 +115,7 @@ return (
 )
 };
 
-export default withAuth(LoginForm);
+export default connect(
+    null,
+    {authenticate}
+)(LoginForm);
