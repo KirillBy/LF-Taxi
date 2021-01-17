@@ -1,9 +1,9 @@
-import React from 'react';
+import React, {useState}  from 'react';
 import './registration-form.css';
 import { Typography, Grid, TextField, makeStyles, Container, Button, Link } from "@material-ui/core";
 import PropTypes from "prop-types";
 import {connect} from 'react-redux';
-import {logIn} from './../../actions/login';
+import {addUser} from './../../actions/user';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -26,10 +26,32 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const RegistrationForm = ({onLoginForm }) => {
+const RegistrationForm = ({onLoginForm, addUser }) => {
     RegistrationForm.propTypes = {
         onLoginForm: PropTypes.func,
     };
+
+    const [email, setEmail] = useState('')
+    const [name, setName] = useState('')
+    const [surname, setSurname] = useState('')
+    const [password, setPassword] = useState('')
+
+    const onEmailChange = (e) => {
+        setEmail(e.target.value);
+    };
+    const onNameChange = (e) => {
+        setName(e.target.value);
+    };
+    const onSurnameChange = (e) => {
+        setSurname(e.target.value);
+    };
+    const onPasswordChange = (e) => {
+        setPassword(e.target.value);
+    }
+    const onSubmit = (e) => {
+        e.preventDefault();
+        addUser({email, password, name, surname})
+   }
 
     const classes = useStyles();
     return (
@@ -58,6 +80,7 @@ const RegistrationForm = ({onLoginForm }) => {
                                     label="Адрес электронной почты"
                                     fullWidth
                                     autoComplete="email"
+                                    onChange={onEmailChange}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -67,6 +90,7 @@ const RegistrationForm = ({onLoginForm }) => {
                                     name="firstName"
                                     label="Имя "
                                     fullWidth
+                                    onChange={onNameChange}
                                 />
                             </Grid>
                             <Grid item xs={12} sm={6}>
@@ -75,7 +99,8 @@ const RegistrationForm = ({onLoginForm }) => {
                                 id="lastName" 
                                 name="lastName" 
                                 label="Фамилия" 
-                                fullWidth 
+                                fullWidth
+                                onChange={onSurnameChange} 
                                 />
                             </Grid>
                             <Grid item xs={12}>
@@ -87,6 +112,7 @@ const RegistrationForm = ({onLoginForm }) => {
                                     type="password"
                                     id="password"
                                     autoComplete="current-password"
+                                    onChange={onPasswordChange}
                                 />
                             </Grid>
                         </Grid>
@@ -97,7 +123,7 @@ const RegistrationForm = ({onLoginForm }) => {
                                 variant="contained"
                                 className={classes.submit}
                                 style={{ backgroundColor: "orange" }}
-                                //onClick={onMap}
+                                onClick={onSubmit}
                             >
                                 Войти
                         </Button>
@@ -112,5 +138,5 @@ const RegistrationForm = ({onLoginForm }) => {
 
 export default connect(
     null,
-    {logIn}
+    {addUser}
 )(RegistrationForm);
