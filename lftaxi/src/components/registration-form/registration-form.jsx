@@ -1,9 +1,10 @@
-import React, {useState}  from 'react';
+import React, {useState, useEffect}  from 'react';
 import './registration-form.css';
 import { Typography, Grid, TextField, makeStyles, Container, Button, Link } from "@material-ui/core";
 import PropTypes from "prop-types";
 import {connect} from 'react-redux';
 import {addUser} from './../../actions/user';
+import { useHistory } from "react-router-dom";
 
 
 const useStyles = makeStyles((theme) => ({
@@ -26,15 +27,24 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const RegistrationForm = ({onLoginForm, addUser }) => {
+const RegistrationForm = ({onLoginForm, addUser, isLoggedIn }) => {
     RegistrationForm.propTypes = {
         onLoginForm: PropTypes.func,
     };
+
+    let history = useHistory();
 
     const [email, setEmail] = useState('')
     const [name, setName] = useState('')
     const [surname, setSurname] = useState('')
     const [password, setPassword] = useState('')
+
+    useEffect(() => {
+        if(isLoggedIn)
+        {
+            history.push("/map");
+        }
+    }, [isLoggedIn])
 
     const onEmailChange = (e) => {
         setEmail(e.target.value);
@@ -50,7 +60,8 @@ const RegistrationForm = ({onLoginForm, addUser }) => {
     }
     const onSubmit = (e) => {
         e.preventDefault();
-        addUser({email, password, name, surname})
+        addUser({email, password, name, surname});
+        
    }
 
     const classes = useStyles();
@@ -137,6 +148,6 @@ const RegistrationForm = ({onLoginForm, addUser }) => {
 
 
 export default connect(
-    null,
+    (state) => ({isLoggedIn: state.auth.isLoggedIn }),
     {addUser}
 )(RegistrationForm);

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import './login-form.css';
 import { Typography, Grid, TextField, makeStyles, Container, Button, Link} from "@material-ui/core";
 import PropTypes from "prop-types";
@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const LoginForm = ({ onRegistrationForm, authenticate}) => {
+const LoginForm = ({ onRegistrationForm, authenticate, isLoggedIn}) => {
 
 LoginForm.propTypes = {
     onRegistrationForm: PropTypes.func,
@@ -36,6 +36,13 @@ let history = useHistory();
 
 const [email, setEmail] = useState('')
 const [password, setPassword] = useState('')
+
+useEffect(() => {
+    if(isLoggedIn)
+    {
+        history.push("/map");
+    }
+}, [isLoggedIn])
 
 
 const onEmailChange = (e) => {
@@ -49,9 +56,7 @@ const onPasswordChange = (e) => {
 
 const onSubmit = (e) => {
      e.preventDefault();
-     authenticate(email, password).then(() => {
-        history.push('/map');
-    });
+     authenticate(email, password, history);
 }
 
 const classes = useStyles();
@@ -116,6 +121,6 @@ return (
 };
 
 export default connect(
-    null,
+    (state) => ({isLoggedIn: state.auth.isLoggedIn }),
     {authenticate}
 )(LoginForm);

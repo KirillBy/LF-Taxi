@@ -11,3 +11,10 @@
     left: 0;
     bottom: 0;
   }
+
+  .order_container{
+    position: absolute;
+    width: 35vw;
+    margin-top: 50px;
+    margin-left: 50px;
+  }

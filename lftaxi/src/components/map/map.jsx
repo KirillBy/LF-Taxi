@@ -1,6 +1,7 @@
 import React, {useEffect} from 'react';
 import mapboxgl from 'mapbox-gl'
 import './map.css';
+import OrderForm from './../order-form'
 
 const Map = () => {
     let map = null;
@@ -23,7 +24,11 @@ const Map = () => {
 
     return (
         <div className="map-wrapper">
-            <div data-testid="map" className="map" ref={mapContainer}/>
+            <div data-testid="map" className="map" ref={mapContainer}>
+                <div className="order_container">
+                <OrderForm/>
+                </div>
+            </div>
         </div>
     )
 };
