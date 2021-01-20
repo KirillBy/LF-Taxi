@@ -3,6 +3,8 @@ import rootReducer from '../reducers';
 import createSagaMiddleware from 'redux-saga' 
 import {authSaga} from '../saga/authSaga'
 import {regSaga} from '../saga/registrationSaga'
+import {adrsSaga} from '../saga/addressSaga'
+import {paySaga} from '../saga/paymentSaga'
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -10,3 +12,5 @@ export const store = createStore(rootReducer, compose(applyMiddleware(sagaMiddle
 
 sagaMiddleware.run(authSaga);
 sagaMiddleware.run(regSaga);
+sagaMiddleware.run(adrsSaga);
+sagaMiddleware.run(paySaga);

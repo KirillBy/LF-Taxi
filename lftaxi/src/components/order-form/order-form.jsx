@@ -2,8 +2,9 @@ import React, {useState, useEffect} from 'react';
 import './order-form.css';
 import { FormControl, Grid, TextField, makeStyles, Container, Button, InputLabel, Select, MenuItem} from "@material-ui/core";
 import {connect} from 'react-redux';
-import {authenticate} from './../../actions/login';
+import {addAddresses} from './../../actions/address';
 import { useHistory } from "react-router-dom";
+
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -29,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const OrderForm = ({authenticate, isLoggedIn}) => {
+const OrderForm = ({addAddresses, isLoggedIn}) => {
 
 let history = useHistory();
 
@@ -39,6 +40,8 @@ const [startOpen, setStartOpen] = React.useState(false)
 const [distOpen, setDistOpen] = React.useState(false)
 
 useEffect(() => {
+    
+    //addAddresses();
     if(isLoggedIn)
     {
         history.push("/map");
@@ -141,5 +144,5 @@ return (
 
 export default connect(
     (state) => ({isLoggedIn: state.auth.isLoggedIn }),
-    {authenticate}
+    {addAddresses}
 )(OrderForm);

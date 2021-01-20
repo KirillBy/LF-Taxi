@@ -1,8 +1,8 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import './card-form.css';
 import { Typography, Grid, TextField, makeStyles, Container, Button} from "@material-ui/core";
 import {connect} from 'react-redux';
-import {addCard} from './../../actions/user';
+import {registerCard} from './../../actions/card';
 import { useHistory } from "react-router-dom";
 import {MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -50,15 +50,21 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const CardForm = ({addCard, userCard}) => {
+const CardForm = ({registerCard, userCard}) => {
 
 let history = useHistory();
 
 const [cardNumber, setcardNumber] = useState('')
-const [cardHolder, setcardHolder] = useState('')
-const [expireDate, setexpireDate] = useState(new Date('2021-01'))
-const [CVC, setCVC] = useState('')
+const [cardName, setcardHolder] = useState('')
+const [expiryDate, setexpireDate] = useState(new Date('2021-01'))
+const [cvc, setCVC] = useState('')
 
+useEffect(() => {
+    effect
+    return () => {
+        cleanup
+    }
+}, [input])
 
 const onCardNumberChange = (e) => {
     setcardNumber(e.target.value);
@@ -80,11 +86,12 @@ const onSubmit = (e) => {
      e.preventDefault();
      const newCard = {
          cardNumber,
-         cardHolder,
-         expireDate,
-         CVC
+         cardName,
+         expiryDate,
+         cvc
      }
-     addCard(newCard);
+     registerCard(newCard)
+
 }
 
 const onMap = () => {
@@ -107,7 +114,7 @@ return (
                     </Typography>
                 </div>
 
-                {userCard === null ? 
+                {userCard === '' ? 
                 <form name="login" className={classes.form} noValidate>
                     <div className={classes.cardGridGroup}>
                     <Grid container spacing={2} xl={10}  >
@@ -129,7 +136,7 @@ return (
                             name="Expire date"
                             views={["year", "month"]}
                             format="MM/yyyy"
-                            value={expireDate}
+                            value={expiryDate}
                             onChange={handleDateChange}
                             KeyboardButtonProps={{
                                 'aria-label': 'change date',
@@ -199,6 +206,6 @@ return (
 };
 
 export default connect(
-    (state) => ({userCard: state.user.userCard }),
-    {addCard}
+    (state) => ({userCard: state.card.cardName }),
+    {registerCard}
 )(CardForm);
