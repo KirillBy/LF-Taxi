@@ -2,7 +2,7 @@ import React, {useEffect, useState} from 'react';
 import './card-form.css';
 import { Typography, Grid, TextField, makeStyles, Container, Button} from "@material-ui/core";
 import {connect} from 'react-redux';
-import {registerCard} from './../../actions/card';
+import {registerCard, getCardData} from './../../actions/card';
 import { useHistory } from "react-router-dom";
 import {MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
@@ -50,7 +50,16 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const CardForm = ({registerCard, userCard}) => {
+const CardForm = ({
+    registerCard, 
+    getCardData, 
+    CardName,
+    ExpiryDate,
+    CardNumber,
+    CVC,
+    Loading,
+    Error,
+}) => {
 
 let history = useHistory();
 
@@ -59,12 +68,16 @@ const [cardName, setcardHolder] = useState('')
 const [expiryDate, setexpireDate] = useState(new Date('2021-01'))
 const [cvc, setCVC] = useState('')
 
-useEffect(() => {
-    effect
-    return () => {
-        cleanup
+useEffect (() => {
+    getCardData();
+    if(Error === null){
+        setcardNumber(CardNumber);
+        setcardHolder(CardName);
+        setexpireDate(ExpiryDate);
+        setCVC(CVC);
     }
-}, [input])
+    
+}, [getCardData,setcardHolder, setcardNumber, setexpireDate, setCVC])
 
 const onCardNumberChange = (e) => {
     setcardNumber(e.target.value);
@@ -113,8 +126,13 @@ return (
                         Способ оплаты 
                     </Typography>
                 </div>
+                {Loading ? (
+                    <Typography variant="body1">Loading....</Typography>
+                ): null}
+                {Error ? (
+                    <Typography color="error">{Error}</Typography>
+                ): null}
 
-                {userCard === '' ? 
                 <form name="login" className={classes.form} noValidate>
                     <div className={classes.cardGridGroup}>
                     <Grid container spacing={2} xl={10}  >
@@ -124,6 +142,8 @@ return (
                                 fullWidth
                                 id="cardnumber"
                                 label="Номер карты"
+                                defaultValue={cardNumber}
+                                variant="filled"
                                 name="cardnumber"
                                 onChange={onCardNumberChange}
                             />
@@ -150,6 +170,8 @@ return (
                             <TextField
                                 required
                                 fullWidth
+                                defaultValue="{cardName}"
+                                variant="filled"
                                 id="cardholder"
                                 label="Имя владельца"
                                 name="cardholder"
@@ -160,6 +182,8 @@ return (
                             <TextField
                                 required
                                 fullWidth
+                                defaultValue={cvc}
+                                variant="filled"
                                 name="cvc"
                                 label="CVC"
                                 type="cvc"
@@ -182,7 +206,7 @@ return (
                         </Button>
                     </div>
                 </form>
-                : 
+                
                 <div className={classes.success}>
                     <p>Платёжные данные обновлены. Теперь вы можете заказывать такси.</p>
                     <div className={classes.buttons}>       
@@ -198,7 +222,7 @@ return (
                     </div>
                 </div>
 
-                }
+                
             </div>
         </Container>
     </React.Fragment>
@@ -206,6 +230,13 @@ return (
 };
 
 export default connect(
-    (state) => ({userCard: state.card.cardName }),
-    {registerCard}
+    (state) => ({
+        CardName: state.card.cardName,
+        ExpiryDate: state.card.expiryDate,
+        CardNumber: state.card.cardNumber,
+        CVC: state.card.cvc,
+        Loading: state.card.loading,
+        Error: state.card.error,
+         }),
+    {registerCard, getCardData}
 )(CardForm);

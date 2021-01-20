@@ -58,7 +58,7 @@ export const serverRegistration = async (email, name, surname, password) => {
     }).then((res) => res.json());
   }
 
-  export const getCardData = async (token) => {
+  export const serverGetCardData = async (token) => {
     return fetch(`https://loft-taxi.glitch.me/card?token=${token}`, {
       method: "GET",
     }).then((res) => res.json());

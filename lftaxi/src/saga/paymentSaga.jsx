@@ -1,7 +1,7 @@
 import { all, put, takeEvery, call } from "redux-saga/effects";
 import {registerCardStart, registerCardError,
-setCardData, getCardDataStart, getCardDataError, registerCard } from "../actions/card";
-import {serverRegisterCard, getCardData} from "../api/api";
+setCardData, getCardDataStart, getCardDataError, registerCard, getCardData } from "../actions/card";
+import {serverRegisterCard, serverGetCardData} from "../api/api";
 
 export function* registerCardSaga(action){
     console.log("ddd")
@@ -28,11 +28,11 @@ export function* registerCardSaga(action){
     }
 }
 
-export function* getCardSage(action) {
+export function* getCardSaga(action) {
     yield put(getCardDataStart());
     const token = yield localStorage.getItem("token");
     try{
-        const response = yield call(getCardData, token);
+        const response = yield call(serverGetCardData, token);
         if(response.id) {
             yield put(setCardData(response));
         }else {
@@ -44,5 +44,8 @@ export function* getCardSage(action) {
 } 
 
 export function* paySaga(){
-    yield all([ takeEvery(registerCard.toString(), registerCardSaga)]);
+    yield all([ 
+        takeEvery(registerCard.toString(), registerCardSaga),
+        takeEvery(getCardData.toString(), getCardSaga)
+    ]);
 }
