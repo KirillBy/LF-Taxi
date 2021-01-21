@@ -85,12 +85,6 @@ const onDateChange = (date) => {
     })
 }
 
-
-// // const [cardNumber, setcardNumber] = useState('')
-// // const [cardName, setcardHolder] = useState('')
-// // const [expiryDate, setexpireDate] = useState(new Date('2021-01'))
-// // const [cvc, setCVC] = useState('')
-
 useEffect (() => {
     getCardData();
     if(error === null){
@@ -98,22 +92,6 @@ useEffect (() => {
     }
     
 }, [getCardData,cardNumber, expiryDate, cardName, cvc])
-
-// const onCardNumberChange = (e) => {
-//     setcardNumber(e.target.value);
-//   };
-
-// const onCardHolderChange = (e) => {
-//     setcardHolder(e.target.value);
-// }
-
-// const onCVCChange = (e) => {
-//     setCVC(e.target.value);
-// }
-
-// const handleDateChange = (date) => {
-//     setexpireDate(date);
-//   };
 
 const onSubmit = (e) => {
      e.preventDefault();

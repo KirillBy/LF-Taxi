@@ -5,6 +5,7 @@ import {authSaga} from '../saga/authSaga'
 import {regSaga} from '../saga/registrationSaga'
 import {adrsSaga} from '../saga/addressSaga'
 import {paySaga} from '../saga/paymentSaga'
+import {rtSaga} from '../saga/routeSaga'
 
 const sagaMiddleware = createSagaMiddleware();
 
@@ -14,3 +15,4 @@ sagaMiddleware.run(authSaga);
 sagaMiddleware.run(regSaga);
 sagaMiddleware.run(adrsSaga);
 sagaMiddleware.run(paySaga);
+sagaMiddleware.run(rtSaga);

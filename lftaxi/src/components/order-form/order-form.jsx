@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import './order-form.css';
 import { FormControl, Grid, TextField, makeStyles, Container, Button, InputLabel, Select, MenuItem} from "@material-ui/core";
 import {connect} from 'react-redux';
-import {addAddresses} from './../../actions/address';
+import {getAddresses, getRoute} from './../../actions/address';
 import { useHistory } from "react-router-dom";
 
 
@@ -30,22 +30,18 @@ const useStyles = makeStyles((theme) => ({
 
 }));
 
-const OrderForm = ({addAddresses, isLoggedIn}) => {
+const OrderForm = ({getAddresses, getRoute, isLoggedIn, listAddresses}) => {
 
 let history = useHistory();
 
 const [startPoint, setStartPoint] = useState('')
 const [destPoint, setDestPoint] = useState('')
-const [startOpen, setStartOpen] = React.useState(false)
-const [distOpen, setDistOpen] = React.useState(false)
+const [startOpen, setStartOpen] = useState(false)
+const [distOpen, setDistOpen] = useState(false)
 
-useEffect(() => {
-    
-    //addAddresses();
-    if(isLoggedIn)
-    {
-        history.push("/map");
-    }
+useEffect(() => {    
+    getAddresses();
+
 }, [isLoggedIn])
 
 
@@ -76,7 +72,7 @@ const handleDistClose = () => {
 
 const onSubmit = (e) => {
      e.preventDefault();
-    // authenticate(email, password, history);
+    getRoute({startPoint, destPoint});
 }
 
 const classes = useStyles();
@@ -89,6 +85,7 @@ return (
                         <Grid item xs={12}>
                             <FormControl className={classes.formControl}>
                             <InputLabel id="demo-controlled-open-select-label">Откуда</InputLabel>
+                            {listAddresses !== null ? (
                             <Select
                                 labelId="demo-controlled-open-select-label"
                                 id="startPoint"
@@ -97,16 +94,20 @@ return (
                                 onClose={handleStartClose}
                                 onOpen={handleStartOpen}
                                 onChange={onStartPointChange}
-                            >
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
-                            </Select>
+                            >                               
+                                {listAddresses.filter((name) => name !== destPoint).map((name) => (
+                                <MenuItem key={name} value={name}>
+                                    {name}
+                                </MenuItem>
+                                ))}
+
+                            </Select>) : null}
                             </FormControl>
                         </Grid>
                         <Grid item xs={12}>
                             <FormControl className={classes.formControl}>
                             <InputLabel id="demo-controlled-open-select-label">Куда</InputLabel>
+                            {listAddresses !== null ? (
                             <Select
                                 labelId="demo-controlled-open-select-label"
                                 id="destPoint"
@@ -116,10 +117,13 @@ return (
                                 onOpen={handleDistOpen}
                                 onChange={onDestPointChange}
                             >
-                                <MenuItem value={10}>Ten</MenuItem>
-                                <MenuItem value={20}>Twenty</MenuItem>
-                                <MenuItem value={30}>Thirty</MenuItem>
-                            </Select>
+                                {listAddresses.filter((name) => name !== startPoint).map((name) => (
+                                <MenuItem key={name} value={name}>
+                                    {name}
+                                </MenuItem>
+                                ))}
+
+                                </Select>) : null}
                             </FormControl>
                         </Grid>
                     </Grid>
@@ -132,7 +136,7 @@ return (
                             style={{backgroundColor:"orange"}}
                             onClick={onSubmit}
                         >
-                            Войти
+                            Заказать
                         </Button>
                     </div>
                 </form>
@@ -143,6 +147,9 @@ return (
 };
 
 export default connect(
-    (state) => ({isLoggedIn: state.auth.isLoggedIn }),
-    {addAddresses}
+    (state) => ({
+        isLoggedIn: state.auth.isLoggedIn,
+        listAddresses: state.addresses.listAddresses,
+     }),
+    {getAddresses, getRoute}
 )(OrderForm);

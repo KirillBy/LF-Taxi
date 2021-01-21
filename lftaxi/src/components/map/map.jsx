@@ -1,9 +1,10 @@
 import React, {useEffect} from 'react';
-import mapboxgl from 'mapbox-gl'
+import mapboxgl, {addLayer} from 'mapbox-gl'
 import './map.css';
-import OrderForm from './../order-form'
+import OrderForm from './../order-form';
+import {connect} from 'react-redux';
 
-const Map = () => {
+const Map = (Route) => {
     let map = null;
     let mapContainer = React.createRef();
 
@@ -16,6 +17,13 @@ const Map = () => {
             center: [27.5556504, 53.9029126], 
             zoom: 12,
         })
+
+ 
+
+        if(Route !== null){
+            console.log(Route)
+            drawRoute(map, Route)
+        }
 
         return () => {
             map.remove();
@@ -33,4 +41,41 @@ const Map = () => {
     )
 };
 
-export default Map;
+export const drawRoute = (map, coordinates) => {
+    map.flyTo({
+      center: coordinates[0],
+      zoom: 15
+    });
+    map.on('load', function() {
+        addLayer({
+            id: "route",
+            type: "line",
+            source: {
+              type: "geojson",
+              data: {
+                type: "Feature",
+                properties: {},
+                geometry: {
+                  type: "LineString",
+                  coordinates
+                }
+              }
+            },
+            layout: {
+              "line-join": "round",
+              "line-cap": "round"
+            },
+            paint: {
+              "line-color": "#ffc617",
+              "line-width": 8
+            }
+        });
+    });
+  };
+
+
+export default connect(
+    (state) => ({
+        Route: state.addresses.route,
+     })
+)(Map);

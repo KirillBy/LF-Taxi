@@ -64,4 +64,8 @@ export const serverRegistration = async (email, name, surname, password) => {
     }).then((res) => res.json());
   }
 
-  
+  export const serverGetRoute = async (startPoint, distPoint) => {
+    return fetch(` https://loft-taxi.glitch.me/route?address1=${startPoint}&address2=${distPoint}`, {
+      method: "GET",
+    }).then((res) => res.json());
+  }
