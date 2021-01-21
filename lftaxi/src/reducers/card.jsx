@@ -1,5 +1,5 @@
 import {registerCardStart, registerCardError,
-    setCardData, getCardDataStart, getCardDataError } from "../actions/card";
+    setCardData, getCardDataStart, getCardDataError, setCardUpdated } from "../actions/card";
 
 const initialState = {
     cardNumber: '',
@@ -8,6 +8,7 @@ const initialState = {
     expiryDate: '',
     error: null,
     loading: false,
+    isUpdated: false,
 };
 
 export default function(state = initialState, action) {
@@ -26,6 +27,9 @@ export default function(state = initialState, action) {
         }
         case registerCardError.toString(): {
             return {...state, loading: false, error: action.payload.error}
+        }
+        case setCardUpdated.toString(): {
+            return {...state, isUpdated: true}
         }
     
         default:

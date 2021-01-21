@@ -1,6 +1,6 @@
 import { all, put, takeEvery, call } from "redux-saga/effects";
 import {registerCardStart, registerCardError,
-setCardData, getCardDataStart, getCardDataError, registerCard, getCardData } from "../actions/card";
+setCardData, getCardDataStart, getCardDataError, registerCard, getCardData, setCardUpdated } from "../actions/card";
 import {serverRegisterCard, serverGetCardData} from "../api/api";
 
 export function* registerCardSaga(action){
@@ -12,14 +12,15 @@ export function* registerCardSaga(action){
     try {
         const response = yield call(
             serverRegisterCard,
-            expiryDate,
             cardNumber,
+            expiryDate,
             cardName,
             cvc,
             token
         );
         if(response.success){
             yield put(setCardData({cardNumber, expiryDate, cardName, cvc}));
+            yield put(setCardUpdated());
         } else {
             yield put(registerCardError({error: response.error}));
         }

@@ -53,57 +53,71 @@ const useStyles = makeStyles((theme) => ({
 const CardForm = ({
     registerCard, 
     getCardData, 
-    CardName,
-    ExpiryDate,
-    CardNumber,
-    CVC,
-    Loading,
-    Error,
+    cardName,
+    expiryDate,
+    cardNumber,
+    cvc,
+    loading,
+    error,
+    isUpdated
 }) => {
 
 let history = useHistory();
 
-const [cardNumber, setcardNumber] = useState('')
-const [cardName, setcardHolder] = useState('')
-const [expiryDate, setexpireDate] = useState(new Date('2021-01'))
-const [cvc, setCVC] = useState('')
+const [formFields, setFormField] = useState({
+    cardNumber: "",
+    cardName: "",
+    expiryDate: new Date(),
+    cvc: "",
+})
+
+const onChange = (e) => {
+    setFormField({
+        ...formFields,
+        [e.target.name]: e.target.value
+    })
+}
+
+const onDateChange = (date) => {
+    setFormField({
+        ...formFields,
+        expiryDate: date
+    })
+}
+
+
+// // const [cardNumber, setcardNumber] = useState('')
+// // const [cardName, setcardHolder] = useState('')
+// // const [expiryDate, setexpireDate] = useState(new Date('2021-01'))
+// // const [cvc, setCVC] = useState('')
 
 useEffect (() => {
     getCardData();
-    if(Error === null){
-        setcardNumber(CardNumber);
-        setcardHolder(CardName);
-        setexpireDate(ExpiryDate);
-        setCVC(CVC);
+    if(error === null){
+        setFormField({cardNumber, expiryDate, cardName, cvc})
     }
     
-}, [getCardData,setcardHolder, setcardNumber, setexpireDate, setCVC])
+}, [getCardData,cardNumber, expiryDate, cardName, cvc])
 
-const onCardNumberChange = (e) => {
-    setcardNumber(e.target.value);
-  };
+// const onCardNumberChange = (e) => {
+//     setcardNumber(e.target.value);
+//   };
 
-const onCardHolderChange = (e) => {
-    setcardHolder(e.target.value);
-}
+// const onCardHolderChange = (e) => {
+//     setcardHolder(e.target.value);
+// }
 
-const onCVCChange = (e) => {
-    setCVC(e.target.value);
-}
+// const onCVCChange = (e) => {
+//     setCVC(e.target.value);
+// }
 
-const handleDateChange = (date) => {
-    setexpireDate(date);
-  };
+// const handleDateChange = (date) => {
+//     setexpireDate(date);
+//   };
 
 const onSubmit = (e) => {
      e.preventDefault();
-     const newCard = {
-         cardNumber,
-         cardName,
-         expiryDate,
-         cvc
-     }
-     registerCard(newCard)
+     registerCard(formFields)
 
 }
 
@@ -126,13 +140,13 @@ return (
                         Способ оплаты 
                     </Typography>
                 </div>
-                {Loading ? (
+                {loading ? (
                     <Typography variant="body1">Loading....</Typography>
                 ): null}
-                {Error ? (
-                    <Typography color="error">{Error}</Typography>
+                {error ? (
+                    <Typography color="error">{error}</Typography>
                 ): null}
-
+                {!isUpdated ? (
                 <form name="login" className={classes.form} noValidate>
                     <div className={classes.cardGridGroup}>
                     <Grid container spacing={2} xl={10}  >
@@ -140,12 +154,11 @@ return (
                             <TextField
                                 required
                                 fullWidth
-                                id="cardnumber"
+                                id="cardNumber"
                                 label="Номер карты"
-                                defaultValue={cardNumber}
-                                variant="filled"
-                                name="cardnumber"
-                                onChange={onCardNumberChange}
+                                value={formFields.cardNumber}               
+                                name="cardNumber"
+                                onChange={onChange}
                             />
                         </Grid>
                         <Grid item xl={10}>
@@ -156,8 +169,8 @@ return (
                             name="Expire date"
                             views={["year", "month"]}
                             format="MM/yyyy"
-                            value={expiryDate}
-                            onChange={handleDateChange}
+                            value={formFields.expiryDate}
+                            onChange={onDateChange}
                             KeyboardButtonProps={{
                                 'aria-label': 'change date',
                             }}
@@ -170,25 +183,23 @@ return (
                             <TextField
                                 required
                                 fullWidth
-                                defaultValue="{cardName}"
-                                variant="filled"
-                                id="cardholder"
+                                value={formFields.cardName}
+                                id="cardName"
                                 label="Имя владельца"
-                                name="cardholder"
-                                onChange={onCardHolderChange}
+                                name="cardName"
+                                onChange={onChange}
                             />
                         </Grid>
                         <Grid item xl={12}>
                             <TextField
                                 required
                                 fullWidth
-                                defaultValue={cvc}
-                                variant="filled"
+                                value={formFields.cvc}
                                 name="cvc"
                                 label="CVC"
                                 type="cvc"
                                 id="cvc"
-                                onChange={onCVCChange}
+                                onChange={onChange}
                             />
                         </Grid>
                     </Grid>
@@ -205,8 +216,8 @@ return (
                             Сохранить
                         </Button>
                     </div>
-                </form>
-                
+                </form>)
+                :
                 <div className={classes.success}>
                     <p>Платёжные данные обновлены. Теперь вы можете заказывать такси.</p>
                     <div className={classes.buttons}>       
@@ -221,7 +232,7 @@ return (
                         </Button>
                     </div>
                 </div>
-
+                }
                 
             </div>
         </Container>
@@ -231,12 +242,13 @@ return (
 
 export default connect(
     (state) => ({
-        CardName: state.card.cardName,
-        ExpiryDate: state.card.expiryDate,
-        CardNumber: state.card.cardNumber,
-        CVC: state.card.cvc,
-        Loading: state.card.loading,
-        Error: state.card.error,
+        cardName: state.card.cardName,
+        expiryDate: state.card.expiryDate,
+        cardNumber: state.card.cardNumber,
+        cvc: state.card.cvc,
+        loading: state.card.loading,
+        error: state.card.error,
+        isUpdated: state.card.isUpdated
          }),
     {registerCard, getCardData}
 )(CardForm);

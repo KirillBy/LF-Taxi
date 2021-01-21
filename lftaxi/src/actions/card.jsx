@@ -8,3 +8,4 @@ export const getCardDataStart = createAction("GET_CARD_DATA_START");
 export const getCardData = createAction("GET_CARD_DATA");
 export const setCardData = createAction("SET_CARD_DATA");
 export const getCardDataError = createAction("GET_CARD_DATA_ERROR");
+export const setCardUpdated = createAction("SET_CARD_UPDATED");
