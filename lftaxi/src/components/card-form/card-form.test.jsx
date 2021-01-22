@@ -9,7 +9,7 @@ import {createMemoryHistory} from 'history'
 describe("CardForm", () => {
     it("render correctly", () => {
         const mockStore = {
-            getState: () => ({user: {userCard: null}}),
+            getState: () => ({card: {cardName: null}}),
             subscribe: () => {},
             dispatch: () => {}
         }
@@ -25,8 +25,8 @@ describe("CardForm", () => {
             
         )
 
-        expect(getByLabelText('Номер карты *')).toHaveAttribute('name', 'cardnumber')
-        expect(getByLabelText('Имя владельца *')).toHaveAttribute('name', 'cardholder')
+        expect(getByLabelText('Номер карты *')).toHaveAttribute('name', 'cardNumber')
+        expect(getByLabelText('Имя владельца *')).toHaveAttribute('name', 'cardName')
         expect(getByLabelText('CVC *')).toHaveAttribute('name', 'cvc')
         expect(getByLabelText('Expire date')).toHaveAttribute('name', 'Expire date')
     })

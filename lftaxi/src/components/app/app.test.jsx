@@ -1,6 +1,6 @@
 import React from 'react'
 import {render} from '@testing-library/react'
-import App from './'
+import App from '.'
 import {Provider} from 'react-redux'
 import {Router} from 'react-router-dom';
 import {createMemoryHistory} from 'history'
@@ -12,7 +12,6 @@ jest.mock('../app-header', () => (() => <div>Header component</div> ))
 
 describe("App", () => {
     it("renders correctly", () => {
-
         const mockStore = {
             getState: () => ({auth: {isLoggedIn: true}}),
             subscribe: () => {},

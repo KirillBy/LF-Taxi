@@ -56,7 +56,7 @@ const onPasswordChange = (e) => {
 
 const onSubmit = (e) => {
      e.preventDefault();
-     authenticate(email, password, history);
+     authenticate(email, password);
 }
 
 const classes = useStyles();

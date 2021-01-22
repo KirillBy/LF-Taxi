@@ -4,7 +4,7 @@ import './map.css';
 import OrderForm from './../order-form';
 import {connect} from 'react-redux';
 
-const Map = (Route) => {
+const Map = ({route}) => {
     let map = null;
     let mapContainer = React.createRef();
 
@@ -18,17 +18,14 @@ const Map = (Route) => {
             zoom: 12,
         })
 
- 
-
-        if(Route !== null){
-            console.log(Route)
-            drawRoute(map, Route)
+        if(route !== null){
+            drawRoute(map, route)
         }
 
         return () => {
             map.remove();
           }
-    }, []);
+    }, [route]);
 
     return (
         <div className="map-wrapper">
@@ -46,8 +43,8 @@ export const drawRoute = (map, coordinates) => {
       center: coordinates[0],
       zoom: 15
     });
-    map.on('load', function() {
-        addLayer({
+    map.on('load', function () {
+      map.addLayer({
             id: "route",
             type: "line",
             source: {
@@ -70,12 +67,12 @@ export const drawRoute = (map, coordinates) => {
               "line-width": 8
             }
         });
-    });
+      })
   };
 
 
 export default connect(
     (state) => ({
-        Route: state.addresses.route,
+        route: state.addresses.route,
      })
 )(Map);
