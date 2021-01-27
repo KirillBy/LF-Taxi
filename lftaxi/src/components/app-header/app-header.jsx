@@ -9,6 +9,7 @@ const AppHeader = ( {logOut}) => {
 
     const onExit = () => {
         logOut();
+        localStorage.removeItem('token');
     }
     const history = useHistory();
 
