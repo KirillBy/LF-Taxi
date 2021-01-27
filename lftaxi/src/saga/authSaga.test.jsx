@@ -2,7 +2,7 @@ import { authenticateSaga } from "./authSaga";
 import { authenticate } from "../actions/login";
 import { recordSaga } from "../helpers/recordSaga";
 
-jest.mock("./../api/api", () => ({ serverLogIn: jest.fn(() =>   ( {success:true})) }));
+jest.mock("./../api/api", () => ({ serverLogIn: () =>  ({success:true})  }));
 
 describe("authSaga", () => {
   describe("#AUTHENTICATE", () => {

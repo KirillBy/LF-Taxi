@@ -6,6 +6,7 @@ import {registerCard, getCardData} from './../../actions/card';
 import { useHistory } from "react-router-dom";
 import {MuiPickersUtilsProvider, KeyboardDatePicker} from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
+import {cardNumberRegex} from './../../helpers/regex'
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -64,10 +65,18 @@ const CardForm = ({
 
 let history = useHistory();
 
+
+
 const [formFields, setFormField] = useState({
     cardNumber: "",
     cardName: "",
-    expiryDate: new Date(),
+    expiryDate: new Date(2020, 1),
+    cvc: "",
+})
+
+const [formErrors, setFormErrors] = useState({
+    cardNumber: "",
+    cardName: "",
     cvc: "",
 })
 
@@ -75,8 +84,36 @@ const onChange = (e) => {
     setFormField({
         ...formFields,
         [e.target.name]: e.target.value
-    })
+    });
+    
 }
+
+const formValidation = () => {
+    if(formFields.cardNumber.length > 0){
+        if(!cardNumberRegex.test(formFields.cardNumber)){
+            
+            setFormErrors({
+                ...formErrors,
+                ["cardNumber"]: 'Incorrect Card Number'
+            })
+        } else {
+            setFormErrors({
+                ...formErrors,
+                ["cardNumber"]: ''
+            })
+        }
+    }
+}
+
+useEffect (() => {
+    formValidation();
+    getCardData();
+    if(error === null){
+        setFormField({cardNumber, expiryDate, cardName, cvc})
+    }
+    
+    
+}, [ getCardData,cardNumber, expiryDate, cardName, cvc ])
 
 const onDateChange = (date) => {
     setFormField({
@@ -85,18 +122,10 @@ const onDateChange = (date) => {
     })
 }
 
-useEffect (() => {
-    getCardData();
-    if(error === null){
-        setFormField({cardNumber, expiryDate, cardName, cvc})
-    }
-    
-}, [getCardData,cardNumber, expiryDate, cardName, cvc])
 
 const onSubmit = (e) => {
      e.preventDefault();
-     registerCard(formFields)
-
+     registerCard(formFields);
 }
 
 const onMap = () => {
@@ -137,6 +166,8 @@ return (
                                 value={formFields.cardNumber}               
                                 name="cardNumber"
                                 onChange={onChange}
+                                error ={formErrors.cardNumber.length === 0 ? false : true }
+                                helperText={formErrors.cardNumber}
                             />
                         </Grid>
                         <Grid item xl={10}>
@@ -146,7 +177,7 @@ return (
                             label="Expire date"
                             name="Expire date"
                             views={["year", "month"]}
-                            format="MM/yyyy"
+                            format="yyyy/MM"
                             value={formFields.expiryDate}
                             onChange={onDateChange}
                             KeyboardButtonProps={{

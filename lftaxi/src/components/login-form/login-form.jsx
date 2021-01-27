@@ -5,6 +5,7 @@ import PropTypes from "prop-types";
 import {connect} from 'react-redux';
 import {authenticate} from './../../actions/login';
 import { useHistory } from "react-router-dom";
+import {emailRegex} from "./../../helpers/regex"
 
 const useStyles = makeStyles((theme) => ({
     form: {
@@ -36,6 +37,8 @@ let history = useHistory();
 
 const [email, setEmail] = useState('')
 const [password, setPassword] = useState('')
+const [emailError, setEmailError] = useState('')
+const [passwordError, setPasswordError] = useState('')
 
 useEffect(() => {
     if(isLoggedIn)
@@ -47,10 +50,29 @@ useEffect(() => {
 
 const onEmailChange = (e) => {
     setEmail(e.target.value);
+    emailValidation();
+
   };
+
+const emailValidation = () => {
+    if (emailRegex.test(email)) {
+        setEmailError('');
+      } else {
+        setEmailError('Invalid email format' );
+      }
+}
+
+const passwordValidation = () => {
+    if (password.length <= 4) {
+        setPasswordError('Password must be more than 5 symbols')
+    } else {
+        setPasswordError('');
+    }  
+}  
 
 const onPasswordChange = (e) => {
     setPassword(e.target.value);
+    passwordValidation();
 }
 
 
@@ -86,6 +108,8 @@ return (
                                 label="Имя пользователя"
                                 name="username"
                                 onChange={onEmailChange}
+                                error ={emailError.length === 0 ? false : true }
+                                helperText={emailError}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -98,6 +122,8 @@ return (
                                 id="password"
                                 onChange={onPasswordChange}
                                 autoComplete="current-password"
+                                error ={passwordError.length === 0 ? false : true }
+                                helperText={passwordError}
                             />
                         </Grid>
                     </Grid>
@@ -109,6 +135,7 @@ return (
                             className={classes.submit}
                             style={{backgroundColor:"orange"}}
                             onClick={onSubmit}
+                            disabled={passwordError.length !== 0 || emailError.length !== 0 || email.length === 0 || password.length === 0 }
                         >
                             Войти
                         </Button>
